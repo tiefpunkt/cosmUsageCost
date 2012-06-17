@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Bootstrap, from Twitter</title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Le styles -->
+		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+		<style type="text/css">
+			/* Override some defaults */
+			html, body {
+				background-color: #eee;
+			}
+			body {
+				padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
+			}
+			.container > footer p {
+				text-align: center; /* center align it with the container */
+			}
+			.container {
+				width: 880px; 
+			}
+
+			/* The white background content wrapper */
+			.content {
+				background-color: #fff;
+				padding: 20px;
+				margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+				-webkit-border-radius: 6px;
+					 -moz-border-radius: 6px;
+								border-radius: 6px;
+				-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+					 -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+								box-shadow: 0 1px 2px rgba(0,0,0,.15);
+			}
+
+			.topbar .label {
+				margin-top: 8px;
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			.hero-unit {
+				margin: 20px -20px;
+				background: url(http://raumzeitlabor.de/sites/all/themes/danland/images/slideshows/RaumZeitLaborLogo.jpg);
+				height: 240px;
+			}
+			
+			section {
+				margin-bottom: 20px;
+			}
+
+		</style>
+
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+ <script type="text/javascript" src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-scrollspy.js"></script>
+ <script type="text/javascript">
+	 $(document).ready(function() {
+		$.ajax({
+			url: 'ajax.php',
+			success: function(data) {
+				console.log(data);
+				output = "";
+				for (var datapoint in data) {
+					output += "<tr><td>" + datapoint + "</td><td>" + data[datapoint].usage + "</td><td>" + data[datapoint].cost + "</td></tr>";
+				}
+				output = "<table>" + output + "</table>";
+				$("#output").html(output);
+			}
+		}).fail(function() {
+			alert("Epic Error");
+		});
+	 });
+ </script>
+	</head>
+
+	<body>
+
+		<div class="topbar" data-scrollspy="scrollspy" >
+			<div class="fill">
+				<div class="container">
+					<a class="brand" href="#">RaumZeitLabor</a>
+
+					<ul class="nav">
+						<li class="active"><a href="#status">Status</a></li>
+						<li><a href="#devices">Ger&auml;te</a></li>
+						<li><a href="#temperature">Temperatur</a></li>
+						<li><a href="#energy">Stromverbrauch</a></li>
+					</ul>
+					<span class="label important pull-right">Offen</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="hero-unit">
+			</div>
+			<div class="content">
+				<div class="row">
+					<div class="span15">
+						<section id="status">
+							<div class="page-header">
+								<h1>Aktueller Status</h1>
+							</div>
+							<img src="http://status.raumzeitlabor.de/status.php"/>
+						</section>
+						<section id="devices">
+							<div class="page-header">
+								<h1>Ger&auml;te</h1>
+							</div>
+							<img src="http://status.raumzeitlabor.de/status-1week.png"/>
+						</section>
+						<section id="energy">
+							<div class="page-header">
+								<h1>Stromverbrauch</h1>
+							</div>
+							<h2>Verbauch pro Tag</h2>
+							Kosten pro kWh: 0,215&euro;
+							<table class="zebra-striped">
+								<thead>
+									<tr>
+										<th>Datum</th>
+										<th>Verbrauch [kWh]</th>
+										<th>Kosten [&euro;]</th>
+									</tr>
+								</thead>
+								<tbody id="output">
+									<td colspan=3><img src="loading.gif"/></td>
+								</tbody>
+						</table>
+						</section>
+					</div>
+				</div>
+			</div>
+
+			<footer>
+				<p>&copy; RaumZeitLabor 2012</p>
+
+			</footer>
+
+		</div> <!-- /container -->
+
+	</body>
+</html>
