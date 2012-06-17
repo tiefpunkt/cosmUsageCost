@@ -4,6 +4,7 @@ class Configuration {
 	var $feed = YOUR_FEED_ID;
 	var $datastream = "YOUR_DATASTREAM_ID";
 	var $price = PRICE_PER_UNIT;
+	var $co2equivalents = YOUR_CO2_OUTPUT_PER_UNIT;
 }
 
 $config = new Configuration();

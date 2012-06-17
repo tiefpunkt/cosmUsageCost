@@ -25,7 +25,7 @@
 				text-align: center; /* center align it with the container */
 			}
 			.container {
-				width: 880px; 
+				width: 700px; 
 			}
 
 			/* The white background content wrapper */
@@ -48,9 +48,29 @@
 			}
 			
 			section {
+				margin-bottom: 40px;
+			}
+			
+			section#summary .row .span4 {
+				background: #DFF0D8 ;
+				text-align: center;
+				-webkit-border-radius: 6px;
+				-moz-border-radius: 6px;
+				border-radius: 6px;
+			}
+			
+			section#summary .row1 {
+				margin-top: 10px;
 				margin-bottom: 20px;
 			}
-
+			
+			section#summary .row .span4 h2 {
+				border-bottom: 0px !important;
+			}
+			
+			h2 {
+				border-bottom: 1px solid #dedede;
+			}
 		</style>
 
  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -62,11 +82,19 @@
 			success: function(data) {
 				console.log(data);
 				output = "";
-				for (var datapoint in data) {
-					output += "<tr><td>" + datapoint + "</td><td>" + data[datapoint].usage + "</td><td>" + data[datapoint].cost + "</td></tr>";
+				for (var datapoint in data.days) {
+					output += "<tr><td>" + datapoint + "</td><td>" + data.days[datapoint].usage + "</td><td>" + data.days[datapoint].cost + "</td><td>" + data.days[datapoint].co2 + "</td></tr>";
 				}
 				output = "<table>" + output + "</table>";
 				$("#output").html(output);
+				$("#total_usage").html(data.summary.total.usage + " kWh");
+				$("#total_cost").html(data.summary.total.cost + " €");
+				$("#total_co2").html(data.summary.total.co2 + " g");
+				$("#avg_usage").html(data.summary.avg.usage + " kWh");
+				$("#avg_cost").html(data.summary.avg.cost + " €");
+				$("#avg_co2").html(data.summary.avg.co2 + " g");
+				$("#detail_price").html(data.detail.price + " €/kWh");
+				$("#detail_co2").html(data.detail.co2equivalents + " g/kWh");
 			}
 		}).fail(function() {
 			alert("Epic Error");
@@ -83,7 +111,9 @@
 					<a class="brand" href="#">Cosm Usage Cost</a>
 
 					<ul class="nav">
-						<li class="active"><a href="#energy">Usage</a></li>
+						<li class="active"><a href="#summary">Summary</a></li>
+						<li><a href="#daily">Daily Consumption</a></li>
+						<li><a href="#details">Details</a></li>
 					</ul>
 				</div>
 			</div>
@@ -92,33 +122,77 @@
 		<div class="container">
 			<div class="content">
 				<div class="row">
-					<div class="span15">
-						<section id="energy">
-							<div class="page-header">
-								<h1>Datastream Usage Cost</h1>
+					<div class="span12">
+
+						<section id="summary">
+							<h2>Summary</h2>
+							<div class="row row1">
+								<div class="span4">
+									<h4>Total Consumption</h4>
+									<h2 id="total_usage">...</h2>
+								</div>
+								<div class="span4">
+									<h4>Total Cost</h4>
+									<h2 id="total_cost">...</h2>
+								</div>
+								<div class="span4">
+									<h4>Total CO2 Output</h4>
+									<h2 id="total_co2">...</h2>
+								</div>
 							</div>
-							<h2>Last 7 days</h2>
-							Price per kWh: 0,215&euro;
+							<div class="row">
+								<div class="span4">
+									<h4>Daily Consumption</h4>
+									<h2 id="avg_usage">...</h2>
+								</div>
+								<div class="span4">
+									<h4>Daily Cost</h4>
+									<h2 id="avg_cost">...</h2>
+								</div>
+								<div class="span4">
+									<h4>Daily CO2 Output</h4>
+									<h2 id="avg_co2">...</h2>
+								</div>
+							</div>
+						</section>
+						<section id="daily">
+							<h2>Daily Consumption</h2>
 							<table class="zebra-striped">
 								<thead>
 									<tr>
 										<th>Date</th>
 										<th>Usage [kWh]</th>
 										<th>Cost [&euro;]</th>
+										<th>CO2 Output [g]</th>
 									</tr>
 								</thead>
 								<tbody id="output">
 									<td colspan=3><img src="loading.gif"/></td>
 								</tbody>
-						</table>
+							</table>
+						</section>
+						<section id="details">
+							<h2>Details</h2>
+							<div class="row">
+								<div class="span6">
+									<h3>Factors</h3>
+									Price per Unit: <span id="detail_price">...</span><br>
+									CO2 output per Unit: <span id="detail_co2">...</span>
+								</div>
+								<div class="span6">
+									<h3>Source</h3>
+									RaumZeitLabor e.V. (Mannheim,Germany)<br>
+									<a href="http://raumzeitlabor.de/">Homepage</a> | <a href="http://cosm.com/feeds/42055">Cosm Feed</a>
+								</div>
+							</div>
+							
 						</section>
 					</div>
 				</div>
 			</div>
 
 			<footer>
-				<p>&copy; Severin Schols 2012</p>
-
+				<p>cosmUsageCost | <a href="http://github.com/tiefpunkt/cosmUsageCost">github Repository</a></p>
 			</footer>
 
 		</div> <!-- /container -->
