@@ -4,7 +4,7 @@ include("config.php");
 
 $pachube = new PachubeAPI($config->api_key);
 
-$date_start = new DateTime("1 month ago");
+$date_start = new DateTime("8 days ago");
 $date_start->setTime(0,0,0);
 $date_end = new DateTime();
 $date_start->setTime(0,0,0);

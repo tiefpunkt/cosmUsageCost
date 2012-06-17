@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Bootstrap, from Twitter</title>
+		<title>Cosm Usage Cost</title>
 		<meta name="description" content="">
 		<meta name="author" content="">
 
@@ -47,12 +47,6 @@
 				padding-right: 5px;
 			}
 			
-			.hero-unit {
-				margin: 20px -20px;
-				background: url(http://raumzeitlabor.de/sites/all/themes/danland/images/slideshows/RaumZeitLaborLogo.jpg);
-				height: 240px;
-			}
-			
 			section {
 				margin-bottom: 20px;
 			}
@@ -86,49 +80,31 @@
 		<div class="topbar" data-scrollspy="scrollspy" >
 			<div class="fill">
 				<div class="container">
-					<a class="brand" href="#">RaumZeitLabor</a>
+					<a class="brand" href="#">Cosm Usage Cost</a>
 
 					<ul class="nav">
-						<li class="active"><a href="#status">Status</a></li>
-						<li><a href="#devices">Ger&auml;te</a></li>
-						<li><a href="#temperature">Temperatur</a></li>
-						<li><a href="#energy">Stromverbrauch</a></li>
+						<li class="active"><a href="#energy">Usage</a></li>
 					</ul>
-					<span class="label important pull-right">Offen</span>
 				</div>
 			</div>
 		</div>
 
 		<div class="container">
-			<div class="hero-unit">
-			</div>
 			<div class="content">
 				<div class="row">
 					<div class="span15">
-						<section id="status">
-							<div class="page-header">
-								<h1>Aktueller Status</h1>
-							</div>
-							<img src="http://status.raumzeitlabor.de/status.php"/>
-						</section>
-						<section id="devices">
-							<div class="page-header">
-								<h1>Ger&auml;te</h1>
-							</div>
-							<img src="http://status.raumzeitlabor.de/status-1week.png"/>
-						</section>
 						<section id="energy">
 							<div class="page-header">
-								<h1>Stromverbrauch</h1>
+								<h1>Datastream Usage Cost</h1>
 							</div>
-							<h2>Verbauch pro Tag</h2>
-							Kosten pro kWh: 0,215&euro;
+							<h2>Last 7 days</h2>
+							Price per kWh: 0,215&euro;
 							<table class="zebra-striped">
 								<thead>
 									<tr>
-										<th>Datum</th>
-										<th>Verbrauch [kWh]</th>
-										<th>Kosten [&euro;]</th>
+										<th>Date</th>
+										<th>Usage [kWh]</th>
+										<th>Cost [&euro;]</th>
 									</tr>
 								</thead>
 								<tbody id="output">
@@ -141,7 +117,7 @@
 			</div>
 
 			<footer>
-				<p>&copy; RaumZeitLabor 2012</p>
+				<p>&copy; Severin Schols 2012</p>
 
 			</footer>
 
