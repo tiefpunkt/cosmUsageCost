@@ -1,0 +1,5 @@
+# Libraries Used
+* jQuery
+* Bootstrap
+* Moment.js from http://momentjs.com/ for date formatting
+* jQuery Format from http://www.asual.com/jquery/format/ for number formatting (might also be able to do dates?)
