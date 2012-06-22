@@ -1,8 +1,10 @@
+"use strict";
 $(document).ready(function() {
 	$.ajax({
 		url: 'ajax.php',
 		success: function(data) {
-			output = "";
+			var output = "";
+			var date;
 			for (var datapoint in data.days) {
 				date = moment(datapoint, "YYYY-MM-DD").format("ddd, MMM Do");
 				output += "<tr><td>" + date + "</td><td>" + data.days[datapoint].usage + "</td><td>" + data.days[datapoint].cost + "</td><td>" + $.format.number(data.days[datapoint].co2, "#,##0") + "</td></tr>";
@@ -19,6 +21,6 @@ $(document).ready(function() {
 			$("#detail_co2").html(data.detail.co2equivalents + " g/kWh");
 		}
 	}).fail(function() {
-		alert("Epic Error");
+		alert("Something went wrong. Please try again.");
 	});
  });
