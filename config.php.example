@@ -5,6 +5,7 @@ class Configuration {
 	var $datastream = "YOUR_DATASTREAM_ID";
 	var $price = PRICE_PER_UNIT;
 	var $co2equivalents = YOUR_CO2_OUTPUT_PER_UNIT;
+	var $timezone = "YOUR_FEED_TIMEZONE";
 }
 
 $config = new Configuration();

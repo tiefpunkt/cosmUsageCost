@@ -10,7 +10,7 @@ $date_end = new DateTime();
 $date_start->setTime(0,0,0);
 $date_format = "Y-m-d\TH:i:s\Z";
 
-$json = $pachube->getDatastreamHistory("json", $config->feed, $config->datastream, $date_start->format($date_format), $date_end->format($date_format), false, false, false, false, false, false, 86400);
+$json = $pachube->getDatastreamHistory("json", $config->feed, $config->datastream, $date_start->format($date_format), $date_end->format($date_format), false, false, false, false, false, false, 86400, $config->timezone);
 
 $datastream = json_decode($json);
 
