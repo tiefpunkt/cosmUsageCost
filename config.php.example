@@ -1,10 +1,19 @@
 <?php
+// Configuration
+// Copy this file to 'config.php', and set the right values.
+
 class Configuration {
+	// Cosm API Key
 	var $api_key =  "YOUR_API_KEY";
+	// Cosm Feed ID
 	var $feed = YOUR_FEED_ID;
+	// Cosm Datastream ID
 	var $datastream = "YOUR_DATASTREAM_ID";
+	// Price per usage unit
 	var $price = PRICE_PER_UNIT;
+	// CO2 output per usage unit
 	var $co2equivalents = YOUR_CO2_OUTPUT_PER_UNIT;
+	// Timezone of the feed
 	var $timezone = "YOUR_FEED_TIMEZONE";
 }
 

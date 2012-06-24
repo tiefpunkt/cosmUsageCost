@@ -2,27 +2,35 @@
 include("PachubeAPI/PachubeAPI.php");
 include("config.php");
 
+// Create Cosm API connector
 $pachube = new PachubeAPI($config->api_key);
 
+// Start- and enddates for Cosm query
 $date_start = new DateTime("8 days ago");
 $date_start->setTime(0,0,0);
 $date_end = new DateTime();
 $date_start->setTime(0,0,0);
 $date_format = "Y-m-d\TH:i:s\Z";
 
+// Get selected datastream history from cosm as json
 $json = $pachube->getDatastreamHistory("json", $config->feed, $config->datastream, $date_start->format($date_format), $date_end->format($date_format), false, false, false, false, false, false, 86400, $config->timezone);
 
+// Decode JSON into an object
 $datastream = json_decode($json);
 
 $days;
 $current_value = 0;
 $total_usage = 0;
 $counter = 0;
-//print_r($datastream["datapoints"]);
+
+// Calculate power usage, CO2 output and costs for each day
 foreach ($datastream->datapoints as $datapoint) {
 	if ($current_value != 0) {
 		$date = substr($datapoint->at,0,10);
 		$days[$date]["usage"] = $datapoint->value - $current_value;
+		
+		// Only handle positive power usage
+		// Negative power usage, such as after a counter reset, is ignored.
 		if ($days[$date]["usage"] >= 0) {
 			$total_usage += $days[$date]["usage"];
 			$days[$date]["cost"] = round($days[$date]["usage"] * $config->price,2);
@@ -38,6 +46,7 @@ foreach ($datastream->datapoints as $datapoint) {
 	$current_value = $datapoint->value;
 }
 
+// Generate ouput JSON
 $output["days"] = $days;
 $output["detail"]["price"] = $config->price;
 $output["detail"]["co2equivalents"] = $config->co2equivalents;
@@ -49,6 +58,7 @@ $output["summary"]["avg"]["usage"] = round($avg_usage,2);
 $output["summary"]["avg"]["cost"] = round($avg_usage * $config->price,2);
 $output["summary"]["avg"]["co2"] = round($avg_usage * $config->co2equivalents,0);
 
+// Send output JSON
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 19 Jul 1997 00:00:00 GMT');
 header('Content-type: application/json');
