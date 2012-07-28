@@ -15,6 +15,10 @@ class Configuration {
 	var $co2equivalents = YOUR_CO2_OUTPUT_PER_UNIT;
 	// Timezone of the feed
 	var $timezone = "YOUR_FEED_TIMEZONE";
+	
+	//Caching settings
+	var $cache = "cache/data.js";
+	var $cache_expire = 3600;
 }
 
 $config = new Configuration();
