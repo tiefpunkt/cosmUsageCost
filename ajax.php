@@ -28,54 +28,61 @@ if (!isset($_GET["refresh"]) && file_exists($config->cache) && (time() < filemti
 	// Decode JSON into an object
 	$datastream = json_decode($json);
 
-	$days;
-	$current_value = 0;
-	$total_usage = 0;
-	$counter = 0;
+	if (isset($datastream->errors)) {
+		unlink($config->cache);
+		$data["error"] = "API failure";
+		$data["message"] = "Cosm: " . $datastream->errors;
+		$output = json_encode($data);
+	} else {
 
-	// Calculate power usage, CO2 output and costs for each day
-	foreach ($datastream->datapoints as $datapoint) {
-		if ($current_value != 0) {
-			$date = substr($datapoint->at,0,10);
-			$days[$date]["usage"] = $datapoint->value - $current_value;
-			
-			// Only handle positive power usage
-			// Negative power usage, such as after a counter reset, is ignored.
-			if ($days[$date]["usage"] >= 0) {
-				$total_usage += $days[$date]["usage"];
-				$days[$date]["cost"] = round($days[$date]["usage"] * $config->price,2);
-				$days[$date]["co2"] = round($days[$date]["usage"] * $config->co2equivalents,0);
-				$days[$date]["usage"] = round($days[$date]["usage"],2);
-				$counter++;
-			} else {
-				$days[$date]["usage"] = "n/a";
-				$days[$date]["cost"] = "n/a";
-				$days[$date]["co2"] = "n/a";
+		$days;
+		$current_value = 0;
+		$total_usage = 0;
+		$counter = 0;
+
+		// Calculate power usage, CO2 output and costs for each day
+		foreach ($datastream->datapoints as $datapoint) {
+			if ($current_value != 0) {
+				$date = substr($datapoint->at,0,10);
+				$days[$date]["usage"] = $datapoint->value - $current_value;
+				
+				// Only handle positive power usage
+				// Negative power usage, such as after a counter reset, is ignored.
+				if ($days[$date]["usage"] >= 0) {
+					$total_usage += $days[$date]["usage"];
+					$days[$date]["cost"] = round($days[$date]["usage"] * $config->price,2);
+					$days[$date]["co2"] = round($days[$date]["usage"] * $config->co2equivalents,0);
+					$days[$date]["usage"] = round($days[$date]["usage"],2);
+					$counter++;
+				} else {
+					$days[$date]["usage"] = "n/a";
+					$days[$date]["cost"] = "n/a";
+					$days[$date]["co2"] = "n/a";
+				}
 			}
+			$current_value = $datapoint->value;
 		}
-		$current_value = $datapoint->value;
+
+		// Generate ouput JSON
+		$data["days"] = $days;
+		$data["detail"]["price"] = $config->price;
+		$data["detail"]["co2equivalents"] = $config->co2equivalents;
+		$data["summary"]["total"]["usage"] = round($total_usage,2);
+		$data["summary"]["total"]["cost"] = round($total_usage * $config->price,2);
+		$data["summary"]["total"]["co2"] = round($total_usage * $config->co2equivalents,0);
+		$avg_usage = $total_usage / $counter;
+		$data["summary"]["avg"]["usage"] = round($avg_usage,2);
+		$data["summary"]["avg"]["cost"] = round($avg_usage * $config->price,2);
+		$data["summary"]["avg"]["co2"] = round($avg_usage * $config->co2equivalents,0);
+
+		// Generate output
+		$data["source"] = "live";
+		$output = json_encode($data);
+		
+		// Write to cache
+		$data["source"] = "cache";
+		file_put_contents($config->cache, json_encode($data));
 	}
-
-	// Generate ouput JSON
-	$data["days"] = $days;
-	$data["detail"]["price"] = $config->price;
-	$data["detail"]["co2equivalents"] = $config->co2equivalents;
-	$data["summary"]["total"]["usage"] = round($total_usage,2);
-	$data["summary"]["total"]["cost"] = round($total_usage * $config->price,2);
-	$data["summary"]["total"]["co2"] = round($total_usage * $config->co2equivalents,0);
-	$avg_usage = $total_usage / $counter;
-	$data["summary"]["avg"]["usage"] = round($avg_usage,2);
-	$data["summary"]["avg"]["cost"] = round($avg_usage * $config->price,2);
-	$data["summary"]["avg"]["co2"] = round($avg_usage * $config->co2equivalents,0);
-
-	// Generate output
-	$data["source"] = "live";
-	$output = json_encode($data);
-	
-	// Write to cache
-	$data["source"] = "cache";
-	file_put_contents($config->cache, json_encode($data));
-	
 }
 
 header('Cache-Control: no-cache, must-revalidate');
