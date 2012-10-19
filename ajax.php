@@ -5,7 +5,7 @@ include("config.php");
 $output= "";
 
 // Try to see if there's some recent cached output available
-if (file_exists($config->cache) && (time() < filemtime($config->cache) + $config->cache_expire)) {
+if (!isset($_GET["refresh"]) && file_exists($config->cache) && (time() < filemtime($config->cache) + $config->cache_expire)) {
 
 	// It is. Let's use that as our output.
 	$output = file_get_contents($config->cache);
